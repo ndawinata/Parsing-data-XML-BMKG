@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Belajar Dasar Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Tutorial Ajax <button id="btn-clear" onclick="clearResult()">Clear</button></h1>
+    <div id="hasil"></div>
+    <button id="button" onclick="loadContent()">Load Content</button>
+    <table id="show_table" border="1">
+        <tr align='center'>
+            <td><b>Waktu Gempa</b></td>
+            <td><b>Lintang</b></td>
+            <td><b>Bujur</b></td>
+            <td><b>Magnitude</b></td>
+            <td><b>Kedalaman</b></td>
+            <td><b>Wilayah</b></td>
+        </tr>
+    </table>
+    <script>
+        function loadContent() {
+            $.ajax({
+                type: "GET",
+                url: "http://data.bmkg.go.id/autogempa.xml",
+                dataType: "xml",
+                success: function (xml) {
+                    $(xml).find('gempa').each(function () {
+                        console.log(this);
+                        var $show = $(this);
+                        var tanggal = $show.find('Tanggal').text();
+                        var jam = $show.find('Jam').text();
+                        var lintang = $show.find('Lintang').text();
+                        var bujur = $show.find('Bujur').text();
+                        var magnitude = $show.find('Magnitude').text();
+                        var kedalaman = $show.find('Kedalaman').text();
+                        var wilayah = $show.find('Wilayah1').text();
+
+                        var html =
+                            '<tr align="center"><td>' + tanggal + '<br>' + jam + '</td>' +
+                            '<td>' + lintang + '</td>' +
+                            '<td>' + bujur + '</td>' +
+                            '<td>' + magnitude + '</td>' +
+                            '<td>' + kedalaman + '</td>' +
+                            '<td>' + wilayah + '</td></tr>';
+
+                        $('#show_table').append($(html));
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
